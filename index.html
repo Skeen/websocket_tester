@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <script type="text/javascript">
+           // Let us open a web socket
+           var ws = new WebSocket("ws://localhost:9998/echo");
+            
+           ws.onopen = function()
+           {
+               console.log("OPEN");
+           };
+            
+           ws.onmessage = function(evt) 
+           { 
+               ws.send("PING");
+               console.log("DATA");
+           };
+            
+           ws.onclose = function()
+           { 
+               console.log("CLOSED");
+           };
+      </script>
+		
+   </head>
+   <body>
+   </body>
+</html>
