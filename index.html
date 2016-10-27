@@ -3,7 +3,9 @@
    <head>
       <script type="text/javascript">
            // Let us open a web socket
-           var ws = new WebSocket("ws://localhost:9998/echo");
+function open(port)
+{
+			var ws = new WebSocket("ws://10.11.110.98:"+ port +"/echo");
             
            ws.onopen = function()
            {
@@ -12,15 +14,38 @@
             
            ws.onmessage = function(evt) 
            { 
-               ws.send("PING");
-               console.log("DATA");
+			   setTimeout(function(){ws.send("PING");}, 0);
+               //console.log("DATA");
            };
             
            ws.onclose = function()
            { 
                console.log("CLOSED");
            };
-      </script>
+}
+var workers = [];
+
+for(var i=0; i<10; i++)
+{
+	var p = 8000 + i;
+	//init(p);
+	open(p)
+}
+for(var i=10; i<20; i++)
+{
+	var p = 8000 + i;
+	init(p);
+}
+
+//open(8000);
+
+function init(p)
+{
+	var w = new Worker("worker.js");
+	workers.push(w);
+	w.postMessage({port:p});
+}
+	  </script>
 		
    </head>
    <body>
